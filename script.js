@@ -1,35 +1,34 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background-color: #f5f5f5;
-  padding-top: 50px;
-}
+// Set the date to countdown to
+const countdownDate = new Date('2024-12-31T23:59:59').getTime();
 
-.countdown {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+// Update the countdown every 1 second
+const countdownInterval = setInterval(function() {
+  // Get the current date and time
+  const now = new Date().getTime();
 
-.countdown-item {
-  margin: 0 10px;
-  background-color: #333;
-  color: #fff;
-  padding: 20px 30px;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+  // Calculate the remaining time
+  const distance = countdownDate - now;
 
-.countdown-item span {
-  display: block;
-  font-size: 36px;
-  font-weight: bold;
-}
+  // Calculate days, hours, minutes, and seconds
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-.countdown-item span:first-child {
-  margin-bottom: 10px;
-}
+  // Display the countdown
+  document.getElementById('days').innerText = formatTime(days);
+  document.getElementById('hours').innerText = formatTime(hours);
+  document.getElementById('minutes').innerText = formatTime(minutes);
+  document.getElementById('seconds').innerText = formatTime(seconds);
 
-.countdown-item span:last-child {
-  font-size: 14px;
+  // If the countdown is finished, stop updating
+  if (distance < 0) {
+    clearInterval(countdownInterval);
+    document.querySelector('.countdown').innerText = 'Countdown expired';
+  }
+}, 1000);
+
+// Add leading zero if the number is less than 10
+function formatTime(time) {
+  return time < 10 ? `0${time}` : time;
 }
